@@ -15,7 +15,8 @@ config.py
 
 # Exclude JSON, Pickle, HTML, txt, and other random
 # files
-*.json
+# KEEP JSON FILES WITH REPO
+# *.json
 *.csv
 *.html
 *.txt
