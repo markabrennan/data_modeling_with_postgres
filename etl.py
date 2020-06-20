@@ -25,7 +25,9 @@ from config_mgr import ConfigMgr
 
 def get_files(filepath):
     """Given a file path, walk the directory hierarchy
-    and collect the absolute path of all JSON files
+    and collect the absolute path of all JSON files.
+    NOTE:  This file was provided in the etl.ipynb template!
+
     Args:       file path
     Returns:    list of JSON files
     """
