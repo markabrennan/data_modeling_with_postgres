@@ -21,7 +21,7 @@ and be able to run analyses on this data, using the relational structure.
 The data model is a Star schema consisting of a primary fact table (songplays), and related 
 dimensions, including songs, artists, users, and times.  A diagram of this model is below.
 
-![](songplays_rows.png)
+![](Songplays_Data_Model.png)
 
 
 ## ETL Pipeline
