@@ -11,7 +11,6 @@ import os
 import sys
 import glob
 import psycopg2
-import pandas as pd
 from sql_queries import *
 from psycopg2.errors import UniqueViolation
 import json
@@ -106,11 +105,9 @@ def insert_artist_data(artist_data, conn, cur):
                 cur:   DB cursor
     Returns:    None
     """
-    artists_seen = set()    
     for artist in artist_data:
         artist_id = artist['artist_id']
-        if artist_id and artist_id not in artists_seen:
-            artists_seen.add(artist_id)
+        if artist_id:
             artist_data = (artist_id, 
                            artist['artist_name'],
                            artist['artist_location'],
@@ -220,7 +217,6 @@ def insert_user_data(all_log_data, conn, cur):
                 cur:   DB cursor
     Returns:    None
     """
-    seen_users = set()
     for entry in all_log_data:
         user_id = first_name = last_name = gender = level = None
         try:
@@ -232,8 +228,7 @@ def insert_user_data(all_log_data, conn, cur):
         except KeyError as e:
             logging.warning(f'Key Error:  {str(e)}')
             continue
-        if user_id and user_id not in seen_users and first_name and last_name and gender and level: 
-            seen_users.add(user_id)
+        if user_id and first_name and last_name and gender and level: 
             insert_vals = (user_id, first_name, last_name, gender, level)
             try:
                 cur.execute(user_table_insert, insert_vals)
