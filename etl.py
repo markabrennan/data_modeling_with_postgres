@@ -107,11 +107,6 @@ def insert_artist_data(artist_data, conn, cur):
     """
     for artist in artist_data:
         artist_id = artist['artist_id']
-        # DIAG:
-        if artist_id in artists_seen:
-            print(f"Artist seen! ID: {artist_id} | name: {artist['artist_name']}")
-            logging.info(f"Artist seen! ID: {artist_id} | name: {artist['artist_name']}")
-        #if artist_id and artist_id not in artists_seen:
         if artist_id:
             artist_data = (artist_id, 
                            artist['artist_name'],

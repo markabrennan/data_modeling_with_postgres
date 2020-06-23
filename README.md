@@ -9,6 +9,38 @@ data from raw JSON files and populate the DB.
 The run.sh script will run the entire pipeline, first creating the DB and relevant tables; and it then
 invokes the main etl.py script which does the work of reading JSON data and inserting it into the DB.
 
+## Business Case
+There are two primary data sources that drive the pipeline:
+- Song data files, where each file comprises info about a single song, including title and artist;
+- User event log data, where user streaming activity is collected in various JSON files.
+
+We would like to model song plays, songs, artists, users, collect all data for these entities,
+and be able to run analyses on this data, using the relational structure.
+
+## Data Model
+The data model is a Star schema consisting of a primary fact table (songplays), and related 
+dimensions, including songs, artists, users, and times.  A diagram of this model is below.
+
+![](songplays_rows.png)
+
+
+## ETL Pipeline
+The pipeline collects data from the song and user event log raw JSON files, builds internal
+data structures for easier processing, and then inserts relevant data attributes into the 
+tables.
+
+Duplicate entries for songs and artists are handled by an "ON CONFLICT" directive in the relevant
+insert queries, where there is no update on conflict. This is a reasonable approach given we
+want to compile all unique instances of songs and artists - so we can safely skip duplicates.
+
+However, for user data, we enrich our "ON CONFLICT" directive with a "DO UPDATE SET level = EXCLUDED.level"
+statement, which allows us to capture changes to a user's level (e.g., transitions from "free" to "paid").
+
+Minimal cleaning was done on the raw data - the data was generall quite clean -  other than ensuring 
+the fields were available, and logging exceptions if not.  However, for song titles and artist names 
+that contained embedded apostrophes, I used regex substitution to escape the apostrophe for the 
+insert statements, which thereby preserves the original names.
+
 ## Files, Code Structure, and Technical Considerations
 ### create_tables.py
 This script does the main DB work - dropping and creating the DB; and dropping and creating
@@ -53,6 +85,26 @@ do all of this draft work.
 ### test.ipynb
 This project template file was NOT utlized, as I used a local Postgres instance with my own DB access tool.
 
+## Post-ETL Table Results
+The screenshots below give partial views of table data, after running select statements in my DB access tool
+of choice, DataGrip.
+
+### Songplays Fact Table
+![](songplays_rows.png)
+
+### Songs Dimension Table
+![](songs_rows.png)
+
+### Artists Dimension Table
+![](artists_rows.png)
+
+### Users Dimension Table
+![](users_rows.png)
+
+### Time Dimension Table
+![](time_rows.png)
+
+
 ## Next steps
 There are no unit tests!  Given the need to get the pipeline working and iterative manual testing, as well as fairly simple
 criteria for success - the inserts work, or not, and create the requisite amount of data (or not) - I have not
@@ -61,4 +113,4 @@ is a bit harder to implemennt.
 
 So an additional next step is to re-factor the code. The etl.py file is too long.
 
-Although I tried to coform to Pep8 standards, I did not applying linting, so this is another necessary next step.
+Although I tried to conform to Pep8 standards, I did not applying linting, so this is another necessary next step.
