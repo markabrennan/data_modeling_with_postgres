@@ -36,7 +36,7 @@ want to compile all unique instances of songs and artists - so we can safely ski
 However, for user data, we enrich our "ON CONFLICT" directive with a "DO UPDATE SET level = EXCLUDED.level"
 statement, which allows us to capture changes to a user's level (e.g., transitions from "free" to "paid").
 
-Minimal cleaning was done on the raw data - the data was generall quite clean -  other than ensuring 
+Minimal cleaning was done on the raw data - the data was generally quite clean -  other than ensuring 
 the fields were available, and logging exceptions if not.  However, for song titles and artist names 
 that contained embedded apostrophes, I used regex substitution to escape the apostrophe for the 
 insert statements, which thereby preserves the original names.
