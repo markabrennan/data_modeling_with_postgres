@@ -6,5 +6,5 @@
 ## Then run the ETL pipeline.
 ##
 
-python3.7 ./create_tables.py
-python3.7 ./etl.py
+python3 ./create_tables.py
+python3 ./etl.py

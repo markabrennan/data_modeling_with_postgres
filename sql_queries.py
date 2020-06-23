@@ -64,7 +64,8 @@ song_table_insert = """INSERT INTO songs(song_id, title, artist_id, year, durati
                         VALUES (%s, %s, %s, %s, %s)"""
 
 artist_table_insert = """INSERT INTO artists(artist_id, name, location, latitude, longitude) 
-                            VALUES(%s, %s, %s, %s, %s)"""
+                            VALUES(%s, %s, %s, %s, %s)
+                            on CONFLICT (artist_id) DO NOTHING"""
 
 time_table_insert = """INSERT INTO time(timestamp, hour, day, week, month, year, weekday) 
                             VALUES (%s, %s, %s, %s, %s, %s, %s)"""
